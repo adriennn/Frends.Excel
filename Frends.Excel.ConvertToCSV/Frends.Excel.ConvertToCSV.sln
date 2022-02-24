@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 25.0.1700.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frends.Excel.ConvertToCSV", "Frends.Excel.ConvertToCSV\Frends.Excel.ConvertToCSV.csproj", "{AB0838CD-0291-4D18-9743-44A9C474145C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frends.Excel.ConvertToCSV.Tests", "Frends.Excel.ConvertToCSV.Tests\Frends.Excel.ConvertToCSV.Tests.csproj", "{3D74A24C-D1EE-48FB-BA13-A7B6FE96EF25}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AB0838CD-0291-4D18-9743-44A9C474145C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB0838CD-0291-4D18-9743-44A9C474145C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB0838CD-0291-4D18-9743-44A9C474145C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB0838CD-0291-4D18-9743-44A9C474145C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D74A24C-D1EE-48FB-BA13-A7B6FE96EF25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D74A24C-D1EE-48FB-BA13-A7B6FE96EF25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D74A24C-D1EE-48FB-BA13-A7B6FE96EF25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D74A24C-D1EE-48FB-BA13-A7B6FE96EF25}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {74C878D2-E662-42A3-B9B0-194A4D0E25D2}
+	EndGlobalSection
+EndGlobal
