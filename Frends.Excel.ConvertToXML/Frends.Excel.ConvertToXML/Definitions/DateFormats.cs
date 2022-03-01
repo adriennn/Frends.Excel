@@ -1,4 +1,5 @@
-﻿namespace Frends.Excel.ConvertToCSV;
+﻿namespace Frends.Excel.ConvertToXML.Definitions;
+
 public enum DateFormats
 {
     /// <summary>

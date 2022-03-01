@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Frends.Excel.ConvertToXML;
+namespace Frends.Excel.ConvertToCSV.Definitions;
 
 public class Input
 {

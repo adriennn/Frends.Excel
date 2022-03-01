@@ -1,8 +1,10 @@
-﻿using System.Data;
+﻿using System.ComponentModel;
+using System.Data;
 using System.Globalization;
 using System.Text;
 using System.Xml;
 using ExcelDataReader;
+using Frends.Excel.ConvertToXML.Definitions;
 
 namespace Frends.Excel.ConvertToXML;
 
@@ -16,7 +18,10 @@ public static class Excel
     /// <param name="cancellationToken"></param>
     /// <returns>Result containing the converted XML string.</returns>
     /// <exception cref="Exception"></exception>
-    public static Result ConvertToXML(Input input, Options options, CancellationToken cancellationToken)
+    public static Result ConvertToXML(
+        [PropertyTab] Input input,
+        [PropertyTab] Options options,
+        CancellationToken cancellationToken)
     {
         try
         {
@@ -43,15 +48,7 @@ public static class Excel
         }
     }
 
-    /// <summary>
-    /// Converts DataSet-object to XML.
-    /// </summary>
-    /// <param name="result">DataSet-object</param>
-    /// <param name="options">Input configurations</param>
-    /// <param name="file_name">Excel file name to be read</param>
-    /// <param name="cancellationToken">Cancellation token</param>
-    /// <returns>String containing contents in XML format.</returns>
-    public static string ConvertDataSetToXml(DataSet result, Options options, string file_name,
+    private static string ConvertDataSetToXml(DataSet result, Options options, string file_name,
         CancellationToken cancellationToken)
     {
         XmlWriterSettings settings = new XmlWriterSettings
@@ -135,13 +132,7 @@ public static class Excel
         }
     }
 
-
-    /// <summary>
-    /// A helper method.
-    /// Converts column header index to letter, as Excel does in its GUI.
-    /// </summary>
-    /// <returns>String containing correct letter combination for column.</returns>
-    public static string ColumnIndexToColumnLetter(int colIndex)
+    private static string ColumnIndexToColumnLetter(int colIndex)
     {
         var div = colIndex;
         var colLetter = string.Empty;
@@ -155,15 +146,7 @@ public static class Excel
         return colLetter;
     }
 
-    /// <summary>
-    /// A helper method. 
-    /// Converts DateTime object to the DateFormat given as options.
-    /// Return agent's date format in default.
-    /// </summary>
-    /// <param name="date"></param>
-    /// <param name="options"></param>
-    /// <returns>string containing correct date format</returns>
-    public static string ConvertDateTimes(DateTime date, Options options)
+    private static string ConvertDateTimes(DateTime date, Options options)
     {
         // Modify the date using date format var in options.
 
@@ -178,7 +161,6 @@ public static class Excel
                 case DateFormats.YYYYMMDD:
                     return date.ToString("yyyy/MM/dd", CultureInfo.InvariantCulture);
                 case DateFormats.DEFAULT:
-                    return date.ToString(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern);
                 default:
                     return date.ToString(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern);
             }
@@ -194,7 +176,6 @@ public static class Excel
                 case DateFormats.YYYYMMDD:
                     return date.ToString("yyyy/MM/dd H:mm:ss", CultureInfo.InvariantCulture);
                 case DateFormats.DEFAULT:
-                    return date.ToString(CultureInfo.CurrentCulture.DateTimeFormat);
                 default:
                     return date.ToString(CultureInfo.CurrentCulture.DateTimeFormat);
             }

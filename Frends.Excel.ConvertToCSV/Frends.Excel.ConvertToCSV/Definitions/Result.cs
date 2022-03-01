@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Frends.Excel.ConvertToXML;
+namespace Frends.Excel.ConvertToCSV.Definitions;
 
 public class Result
 {
@@ -22,12 +22,12 @@ public class Result
     /// Excel-conversion to CSV.
     /// </summary>
     /// <returns>String</returns>
-    public string XML { get; private set; }
+    public string CSV { get; private set; }
 
-    public Result(bool success, string xml, string errorMessage)
+    public Result(bool success, string csv, string errorMessage)
     {
         Success = success;
-        XML = xml;
+        CSV = csv;
         ErrorMessage = errorMessage;
     }
 }

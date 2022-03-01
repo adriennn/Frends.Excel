@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-
-namespace Frends.Excel.ConvertToXML;
+namespace Frends.Excel.ConvertToCSV.Definitions;
 
 public class Options
 {
@@ -10,6 +9,13 @@ public class Options
     /// </summary>
     [DefaultValue(@"")]
     public string ReadOnlyWorkSheetWithName { get; set; }
+
+    /// <summary>
+    /// Csv separator.
+    /// </summary>
+    [DefaultValue(@";")]
+    [DisplayFormat(DataFormatString = "Text")]
+    public string CsvSeparator { get; set; }
 
     /// <summary>
     /// If set to true, numbers will be used as column headers instead of letters (A = 1, B = 2...).

@@ -1,7 +1,9 @@
-﻿using System.Data;
+﻿using System.ComponentModel;
+using System.Data;
 using System.Globalization;
 using System.Text;
 using ExcelDataReader;
+using Frends.Excel.ConvertToCSV.Definitions;
 
 namespace Frends.Excel.ConvertToCSV;
 public static class Excel
@@ -14,7 +16,10 @@ public static class Excel
     /// <param name="cancellationToken"></param>
     /// <returns>Result containing the converted CSV string.</returns>
     /// <exception cref="Exception"></exception>
-    public static Result ConvertToCSV(Input input, Options options, CancellationToken cancellationToken)
+    public static Result ConvertToCSV(
+        [PropertyTab] Input input,
+        [PropertyTab] Options options,
+        CancellationToken cancellationToken)
     {
         try
         {
@@ -25,7 +30,7 @@ public static class Excel
                 using (var excelReader = ExcelReaderFactory.CreateReader(stream))
                 {
                     var result = excelReader.AsDataSet();
-                    var csv = ConveDataSetToCSV(result, options, cancellationToken);
+                    var csv = ConvertDataSetToCSV(result, options, cancellationToken);
                     return new Result(true, csv, null);
                 }
             }
@@ -41,14 +46,7 @@ public static class Excel
         }
     }
 
-    /// <summary>
-    /// Converts DataSet-object to CSV.
-    /// </summary>
-    /// <param name="result">DataSet-object</param>
-    /// <param name="options">Input configurations</param>
-    /// <param name="cancellationToken">Cancellation token</param>
-    /// <returns>String containing the converted Excel.</returns>
-    private static string ConveDataSetToCSV(DataSet result, Options options, CancellationToken cancellationToken)
+    private static string ConvertDataSetToCSV(DataSet result, Options options, CancellationToken cancellationToken)
     {
         var resultData = new StringBuilder();
 
@@ -78,15 +76,7 @@ public static class Excel
         return resultData.ToString();
     }
 
-    /// <summary>
-    /// A helper method. 
-    /// Converts DateTime object to the DateFormat given as options.
-    /// Return agent's date format in default.
-    /// </summary>
-    /// <param name="date"></param>
-    /// <param name="options"></param>
-    /// <returns>string containing correct date format</returns>
-    public static string ConvertDateTimes(DateTime date, Options options)
+    private static string ConvertDateTimes(DateTime date, Options options)
     {
         // Modify the date using date format var in options.
 
