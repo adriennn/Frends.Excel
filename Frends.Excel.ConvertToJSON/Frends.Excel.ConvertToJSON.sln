@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Frends.Excel.ConvertToJSON", "Frends.Excel.ConvertToJSON\Frends.Excel.ConvertToJSON.csproj", "{AB0838CD-0291-4D18-9743-44A9C474145C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Frends.Excel.ConvertToJSON.Tests", "Frends.Excel.ConvertToJSON.Tests\Frends.Excel.ConvertToJSON.Tests.csproj", "{3D74A24C-D1EE-48FB-BA13-A7B6FE96EF25}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{06E4AF05-FCF6-48F8-840A-3DBB918C71A1}"
+	ProjectSection(SolutionItems) = preProject
+		CHANGELOG.md = CHANGELOG.md
+		..\.github\workflows\ConvertToJSON_main.yml = ..\.github\workflows\ConvertToJSON_main.yml
+		..\.github\workflows\ConvertToJSON_release.yml = ..\.github\workflows\ConvertToJSON_release.yml
+		..\.github\workflows\ConvertToJSON_test.yml = ..\.github\workflows\ConvertToJSON_test.yml
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AB0838CD-0291-4D18-9743-44A9C474145C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB0838CD-0291-4D18-9743-44A9C474145C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB0838CD-0291-4D18-9743-44A9C474145C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB0838CD-0291-4D18-9743-44A9C474145C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D74A24C-D1EE-48FB-BA13-A7B6FE96EF25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D74A24C-D1EE-48FB-BA13-A7B6FE96EF25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D74A24C-D1EE-48FB-BA13-A7B6FE96EF25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D74A24C-D1EE-48FB-BA13-A7B6FE96EF25}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {74C878D2-E662-42A3-B9B0-194A4D0E25D2}
+	EndGlobalSection
+EndGlobal
