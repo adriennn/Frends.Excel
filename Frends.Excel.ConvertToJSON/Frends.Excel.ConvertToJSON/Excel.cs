@@ -3,19 +3,19 @@ using System.Data;
 using System.Globalization;
 using System.Text;
 using ExcelDataReader;
-using Frends.Excel.ConvertToXML.Definitions;
+using Frends.Excel.ConvertToJSON.Definitions;
 
-namespace Frends.Excel.ConvertToXML;
+namespace Frends.Excel.ConvertToJSON;
 
 public static class Excel
 {
     /// <summary>
-    /// Converts Excel file to XML. [Documentation](https://github.com/FrendsPlatform/Frends.Excel/tree/main/Frends.Excel.ConvertToXML)
+    /// Converts Excel file to JSON. [Documentation](https://github.com/FrendsPlatform/Frends.Excel/tree/main/Frends.Excel.ConvertToJSON)
     /// </summary>
     /// <param name="input">Input configuration</param>
     /// <param name="options">Input options</param>
     /// <param name="cancellationToken"></param>
-    /// <returns>Result containing the converted XML string.</returns>
+    /// <returns>Result containing the converted JSON string.</returns>
     /// <exception cref="Exception"></exception>
     public static Result ConvertToJSON(
         [PropertyTab] Input input,
@@ -40,11 +40,16 @@ public static class Excel
         {
             if (options.ThrowErrorOnFailure)
             {
-                throw new Exception("Error while converting Excel file to XML", ex);
+                throw new Exception("Error while converting Excel file to JSON", ex);
             }
 
-            return new Result(false, null, $"Error while converting Excel file to XML: {ex}");
+            return new Result(false, null, $"Error while converting Excel file to JSON: {ex}");
         }
+    }
+
+    private static string SanitizeJSONValue(string input)
+    {
+        return input.Replace("\"", "\\\"");
     }
 
     private static string ConvertDataSetToJson(DataSet result, Options options, string fileName)
@@ -66,48 +71,49 @@ public static class Excel
 
         foreach (DataTable dt in result.Tables)
         {
-
-            if (options.ReadOnlyWorkSheetWithName.Contains(dt.TableName) ||
-                options.ReadOnlyWorkSheetWithName.Length == 0)
+            // If sheet name is specified AND current sheet isn't the one we want - skip
+            if (!string.IsNullOrWhiteSpace(options.ReadOnlyWorkSheetWithName)
+                && options.ReadOnlyWorkSheetWithName.Trim() != dt.TableName)
             {
-                json.Append("{");
-                json.Append($"\"name\": \"{dt.TableName}\",");
-                json.Append("\"rows\": ");
-
-                // Building json from datatable.
-                if (dt.Rows.Count > 0)
-                {
-                    json.Append("[");
-                    for (var i = 0; i < dt.Rows.Count; i++)
-                    {
-                        var content = WriteRowToJson(dt, i, options).ToString();
-                        if (!content.ToString().Equals("empty"))
-                        {
-                            json.Append(WriteRowToJson(dt, i, options).ToString());
-                            if (i < dt.Rows.Count - 1)
-                            {
-                                json.Append("},");
-                            }
-                            else if (i == dt.Rows.Count - 1)
-                            {
-                                json.Append("}");
-                            }
-                        }
-                    }
-
-                    json.Append("]");
-                }
-
-                if (result.Tables.IndexOf(dt) != result.Tables.Count - 1)
-                {
-                    json.Append("},");
-                }
-                else
-                {
-                    json.Append("}");
-                }
+                continue;
             }
 
+            json.Append("{");
+            json.Append($"\"name\": \"{SanitizeJSONValue(dt.TableName)}\",");
+            json.Append("\"rows\": ");
+
+            // Building json from datatable.
+            if (dt.Rows.Count > 0)
+            {
+                json.Append("[");
+                for (var i = 0; i < dt.Rows.Count; i++)
+                {
+                    var content = WriteRowToJson(dt, i, options).ToString();
+                    if (!content.ToString().Equals("empty"))
+                    {
+                        json.Append(content);
+                        if (i < dt.Rows.Count - 1)
+                        {
+                            json.Append("},");
+                        }
+                        else if (i == dt.Rows.Count - 1)
+                        {
+                            json.Append("}");
+                        }
+                    }
+                }
+                json.Append("]");
+            }
+
+            json.Append("}");
+
+            // Append comma when this is either the last sheet
+            // An exception is when we serialize only one sheet - then we never need the comma (thus check for that param)
+            if (string.IsNullOrWhiteSpace(options.ReadOnlyWorkSheetWithName)
+                && result.Tables.IndexOf(dt) != result.Tables.Count - 1)
+            {
+                json.Append(",");
+            }
         }
 
         if (options.ReadOnlyWorkSheetWithName.Length == 0)
@@ -127,7 +133,7 @@ public static class Excel
         rowJson.Append("{");
         rowJson.Append($"\"{i + 1}\":");
 
-        var content = WriteColumnToJson(dt, i, options).ToString();
+        var content = WriteRowColumnsToJson(dt, i, options);
         if (content.Equals("[]"))
         {
             return "empty";
@@ -138,48 +144,30 @@ public static class Excel
         return rowJson;
     }
 
-    private static object WriteColumnToJson(DataTable dt, int i, Options options)
+    private static string WriteRowColumnsToJson(DataTable dt, int i, Options options)
     {
-        var columnJson = new StringBuilder();
-        columnJson.Append("[");
+        var columnValues = new List<string>();
         for (var j = 0; j < dt.Columns.Count; j++)
         {
             var content = dt.Rows[i].ItemArray[j];
-            if (string.IsNullOrWhiteSpace(content.ToString()) == false)
+            if (string.IsNullOrWhiteSpace(content.ToString())) continue;
+
+            if (content.GetType().Name == "DateTime")
             {
-                if (content.GetType().Name == "DateTime")
-                {
-                    content = ConvertDateTimes((DateTime)content, options);
-                }
-
-                content = content.ToString();
-                columnJson.Append("{");
-                if (options.UseNumbersAsColumnHeaders)
-                {
-                    columnJson.Append($"\"{j + 1}\":");
-                }
-                else
-                {
-                    columnJson.Append($"\"{ColumnIndexToColumnLetter(j + 1)}\":");
-                }
-
-                columnJson.Append($"\"{content}\"");
-                if (j != dt.Columns.Count - 1)
-                {
-                    columnJson.Append("},");
-                }
-                else
-                {
-                    columnJson.Append("}");
-                }
-
+                content = ConvertDateTimes((DateTime)content, options);
             }
 
+            content = SanitizeJSONValue(content.ToString());
+
+            var columnHeader = options.UseNumbersAsColumnHeaders
+                ? $"\"{j + 1}\""
+                : $"\"{ColumnIndexToColumnLetter(j + 1)}\"";
+
+            var columnValue = $"{{{columnHeader}:\"{content}\"}}";
+            columnValues.Add(columnValue);
         }
 
-        columnJson.Append("]");
-
-        return columnJson;
+        return $"[{string.Join(',', columnValues)}]";
     }
 
     private static string ConvertDateTimes(DateTime date, Options options)

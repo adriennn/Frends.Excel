@@ -13,10 +13,10 @@
     <PackageTags>Frends</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Description>Task for converting Excel files to XML.</Description>
+    <Description>Task for converting Excel files to JSON.</Description>
     <PackageProjectUrl>https://frends.com/</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/FrendsPlatform/Frends.Excel/tree/main/Frends.Excel.ConvertToXML</RepositoryUrl>
-    <PackageId>Frends.Excel.ConvertToXML</PackageId>
+    <RepositoryUrl>https://github.com/FrendsPlatform/Frends.Excel/tree/main/Frends.Excel.ConvertToJSON</RepositoryUrl>
+    <PackageId>Frends.Excel.ConvertToJSON</PackageId>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Frends.Excel.ConvertToXML.Definitions;
+namespace Frends.Excel.ConvertToJSON.Definitions;
 
 public class Input
 {

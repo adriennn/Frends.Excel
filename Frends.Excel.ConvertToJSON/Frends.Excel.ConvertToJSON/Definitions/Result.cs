@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Frends.Excel.ConvertToXML.Definitions;
+namespace Frends.Excel.ConvertToJSON.Definitions;
 
 public class Result
 {

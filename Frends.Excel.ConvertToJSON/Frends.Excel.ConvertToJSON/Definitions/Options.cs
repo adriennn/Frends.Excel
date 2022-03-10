@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Frends.Excel.ConvertToXML.Definitions;
+namespace Frends.Excel.ConvertToJSON.Definitions;
 
 public class Options
 {
@@ -9,7 +9,7 @@ public class Options
     /// If empty, all work sheets are read.
     /// </summary>
     [DefaultValue(@"")]
-    public string ReadOnlyWorkSheetWithName { get; set; }
+    public string ReadOnlyWorkSheetWithName { get; set; } = "";
 
     /// <summary>
     /// If set to true, numbers will be used as column headers instead of letters (A = 1, B = 2...).

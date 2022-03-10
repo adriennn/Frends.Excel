@@ -1,4 +1,4 @@
-﻿namespace Frends.Excel.ConvertToXML.Definitions;
+﻿namespace Frends.Excel.ConvertToJSON.Definitions;
 
 public enum DateFormats
 {
