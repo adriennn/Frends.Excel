@@ -8,12 +8,12 @@ namespace Frends.Excel.Parse;
 public static class Excel
 {
     /// <summary>
-    /// Converts Excel file to data set. [Documentation](https://github.com/FrendsPlatform/Frends.Excel/tree/main/Frends.Excel.Parse)
+    /// Converts Excel file to data set. [Documentation](https://tasks.frends.com/tasks#frends-tasks/Frends.Excel.Parse)
     /// </summary>
     /// <param name="input">Input configuration</param>
     /// <param name="options">Input options</param>
     /// <param name="cancellationToken"></param>
-    /// <returns>Result containing the parsed Excel as data set.</returns>
+    /// <returns>Result containing the parsed Excel: object { bool Success, string ErrorMessage, DataSet DataSet }</returns>
     /// <exception cref="Exception"></exception>
     public static Result Parse(
         [PropertyTab] Input input,
