@@ -1,5 +1,8 @@
 ﻿namespace Frends.Excel.ConvertToJSON.Definitions;
 
+/// <summary>
+/// Date formats enum.
+/// </summary>
 public enum DateFormats
 {
     /// <summary>

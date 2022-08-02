@@ -7,6 +7,9 @@ using Frends.Excel.ConvertToJSON.Definitions;
 
 namespace Frends.Excel.ConvertToJSON;
 
+/// <summary>
+/// Excel to JSON converter task.
+/// </summary>
 public static class Excel
 {
     /// <summary>
@@ -40,7 +43,7 @@ public static class Excel
         {
             if (options.ThrowErrorOnFailure)
             {
-                throw new Exception("Error while converting Excel file to JSON", ex);
+                throw new InvalidOperationException("Error while converting Excel file to JSON", ex);
             }
 
             return new Result(false, null, $"Error while converting Excel file to JSON: {ex}");
@@ -127,7 +130,7 @@ public static class Excel
         return json.ToString();
     }
 
-    private static object WriteRowToJson(DataTable dt, int i, Options options)
+    private static string WriteRowToJson(DataTable dt, int i, Options options)
     {
         var rowJson = new StringBuilder();
         rowJson.Append("{");
@@ -141,7 +144,7 @@ public static class Excel
 
         rowJson.Append(content);
 
-        return rowJson;
+        return rowJson.ToString();
     }
 
     private static string WriteRowColumnsToJson(DataTable dt, int i, Options options)
@@ -150,14 +153,14 @@ public static class Excel
         for (var j = 0; j < dt.Columns.Count; j++)
         {
             var content = dt.Rows[i].ItemArray[j];
-            if (string.IsNullOrWhiteSpace(content.ToString())) continue;
+            if (string.IsNullOrWhiteSpace(content?.ToString())) continue;
 
             if (content.GetType().Name == "DateTime")
             {
                 content = ConvertDateTimes((DateTime)content, options);
             }
 
-            content = SanitizeJSONValue(content.ToString());
+            content = SanitizeJSONValue(content?.ToString() ?? "");
 
             var columnHeader = options.UseNumbersAsColumnHeaders
                 ? $"\"{j + 1}\""

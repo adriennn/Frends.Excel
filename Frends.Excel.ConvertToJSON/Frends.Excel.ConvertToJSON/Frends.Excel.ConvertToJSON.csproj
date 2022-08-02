@@ -18,6 +18,12 @@
     <RepositoryUrl>https://github.com/FrendsPlatform/Frends.Excel/tree/main/Frends.Excel.ConvertToJSON</RepositoryUrl>
     <PackageId>Frends.Excel.ConvertToJSON</PackageId>
   </PropertyGroup>
+  
+  <ItemGroup>
+	  <None Include="FrendsTaskMetadata.json" Pack="true" PackagePath="/">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+  </ItemGroup>
 
   <ItemGroup>
     <None Remove="ExcelDataReader.DataSet" />

@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Frends.Excel.ConvertToJSON.Definitions;
 
+/// <summary>
+/// Options paramameters for the Excel to JSON conversion.
+/// </summary>
 public class Options
 {
     /// <summary>
