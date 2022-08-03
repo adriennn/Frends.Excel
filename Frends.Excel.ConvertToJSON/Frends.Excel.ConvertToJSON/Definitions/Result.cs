@@ -12,7 +12,7 @@ public class Result
     /// </summary>
     /// <example>true</example>
     [DefaultValue("false")]
-    public bool Success { get; set; }
+    public bool Success { get; private set; }
 
     /// <summary>
     /// Exception message.

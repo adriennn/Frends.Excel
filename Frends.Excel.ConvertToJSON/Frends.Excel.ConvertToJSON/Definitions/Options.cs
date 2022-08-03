@@ -25,6 +25,7 @@ public class Options
     /// <summary>
     /// Choose if exception should be thrown when conversion fails.
     /// </summary>
+    /// <example>true</example>
     [DefaultValue("true")]
     public bool ThrowErrorOnFailure { get; set; }
 
