@@ -1,4 +1,4 @@
-name: Frends.Excel.ConvertToCSV Main
+name: ConvertToCSV_build_main
 
 on:
   push:
@@ -8,7 +8,6 @@ on:
       - 'Frends.Excel.ConvertToCSV/**'
   workflow_dispatch:
   
-
 jobs:
   build:
     uses: FrendsPlatform/FrendsTasks/.github/workflows/build_main.yml@main
@@ -16,4 +15,3 @@ jobs:
       workdir: Frends.Excel.ConvertToCSV
     secrets:
       badge_service_api_key: ${{ secrets.BADGE_SERVICE_API_KEY }}
-      
