@@ -13,7 +13,8 @@ public class ExcelConvertTests
     private readonly Input _input = new();
     private readonly Options _options = new();
 
-    // Cat image in example files is from Pixbay.com. It is licenced in CC0 Public Domain (Free for commercial use, No attribution required). It is uploaded by Ben_Kerckx https://pixabay.com/en/cat-animal-pet-cats-close-up-300572/
+    // Cat image in example files is from Pixbay.com. It is licenced in CC0 Public Domain (Free for commercial use, No attribution required).
+    // It is uploaded by Ben_Kerckx https://pixabay.com/en/cat-animal-pet-cats-close-up-300572/
 
     [SetUp]
     public void Setup()
@@ -23,9 +24,6 @@ public class ExcelConvertTests
         _options.ReadOnlyWorkSheetWithName = "";
     }
 
-    /// <summary>
-    /// Test converting all worksheets of xlsx file to csv.
-    /// </summary>
     [Test]
     public void TestConvertXlsxToCSV()
     {
@@ -44,9 +42,6 @@ public class ExcelConvertTests
             throw new Exception($"Path missing, {_input.Path}");
     }
 
-    /// <summary>
-    /// Test converting all worksheets of xls file to csv.
-    /// </summary>
     [Test]
     public void TestConvertXlsToCSV()
     {
@@ -65,9 +60,6 @@ public class ExcelConvertTests
             throw new Exception($"Path missing, {_input.Path}");
     }
 
-    /// <summary>
-    /// Test converting all worksheets of xlsx file to csv.
-    /// </summary>
     [Test]
     public void TestConvertXlsxWithDatesToCSV()
     {
@@ -89,9 +81,6 @@ public class ExcelConvertTests
             throw new Exception($"Path missing, {_input.Path}");
     }
 
-    /// <summary>
-    /// Test converting one worksheet of xls file to csv.
-    /// </summary>
     [Test]
     public void TestConvertXlsOneWorksheetToCSV()
     {
@@ -110,9 +99,6 @@ public class ExcelConvertTests
             throw new Exception($"Path missing, {_input.Path}");
     }
 
-    /// <summary>
-    /// Test converting one worksheet of xls file to csv.
-    /// </summary>
     [Test]
     public void ShouldThrowUnknownFileFormatError()
     {
@@ -126,9 +112,6 @@ public class ExcelConvertTests
             throw new Exception($"Path missing, {_input.Path}");
     }
 
-    /// <summary>
-    /// Try to convert a file that does not exist 
-    /// </summary>
     [Test]
     public void DoNotThrowOnFailure()
     {

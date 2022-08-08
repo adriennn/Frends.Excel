@@ -52,23 +52,23 @@ public static class Excel
         foreach (DataTable table in result.Tables)
         {
             // Read only wanted worksheets. If none is specified read all.
-            if (options.ReadOnlyWorkSheetWithName != null && (options.ReadOnlyWorkSheetWithName.Contains(table.TableName) || options.ReadOnlyWorkSheetWithName.Length == 0))
+            if (!options.ShouldReadSheet(table.TableName))
+                continue;
+            
+            for (var i = 0; i < table.Rows.Count; i++)
             {
-                for (var i = 0; i < table.Rows.Count; i++)
+                for (var j = 0; j < table.Columns.Count; j++)
                 {
-                    for (var j = 0; j < table.Columns.Count; j++)
-                    {
-                        cancellationToken.ThrowIfCancellationRequested();
-                        var item = table.Rows[i].ItemArray[j];
-                        if (item != null && item.GetType().Name == "DateTime")
-                            item = ConvertDateTimes((DateTime)item, options);
+                    cancellationToken.ThrowIfCancellationRequested();
+                    var item = table.Rows[i].ItemArray[j];
+                    if (item != null && item.GetType().Name == "DateTime")
+                        item = ConvertDateTimes((DateTime)item, options);
 
-                        resultData.Append(item + options.CsvSeparator);
-                    }
-                    // Remove last CsvSeparator.
-                    resultData.Length--;
-                    resultData.Append(Environment.NewLine);
+                    resultData.Append(item + options.CsvSeparator);
                 }
+                // Remove last CsvSeparator.
+                resultData.Length--;
+                resultData.Append(Environment.NewLine);
             }
         }
         return resultData.ToString();

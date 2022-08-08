@@ -1,4 +1,4 @@
-name: ConvertToCSV_release
+name: ConvertToCSV release
 
 on:
   workflow_dispatch:

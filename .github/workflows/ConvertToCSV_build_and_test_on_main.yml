@@ -1,4 +1,4 @@
-name: ConvertToCSV_build_main
+name: ConvertToCSV build main
 
 on:
   push:

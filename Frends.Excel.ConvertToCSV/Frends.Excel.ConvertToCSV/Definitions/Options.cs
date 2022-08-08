@@ -17,7 +17,7 @@ public class Options
     /// <summary>
     /// Csv separator.
     /// </summary>
-    /// <example>&#59;</example>
+    /// <example>;</example>
     [DefaultValue(@";")]
     [DisplayFormat(DataFormatString = "Text")]
     public string? CsvSeparator { get; set; }
@@ -44,4 +44,14 @@ public class Options
     /// <example>false</example>
     [DefaultValue("false")]
     public bool ShortDatePattern { get; set; }
+
+    internal bool ShouldReadSheet(string sheetName)
+    {
+        if (string.IsNullOrWhiteSpace(ReadOnlyWorkSheetWithName))
+            return true;
+        if (ReadOnlyWorkSheetWithName.Contains(sheetName))
+            return true;
+
+        return false;
+    }
 }
