@@ -1,9 +1,8 @@
-name: Frends.Excel.ConvertToCSV Release
+name: ConvertToCSV release
 
 on:
   workflow_dispatch:
   
-
 jobs:
   build:
     uses: FrendsPlatform/FrendsTasks/.github/workflows/release.yml@main
@@ -11,4 +10,3 @@ jobs:
       workdir: Frends.Excel.ConvertToCSV
     secrets:
       feed_api_key: ${{ secrets.TASKS_FEED_API_KEY }}
-      

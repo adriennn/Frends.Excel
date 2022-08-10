@@ -5,6 +5,15 @@ VisualStudioVersion = 25.0.1700.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frends.Excel.ConvertToCSV", "Frends.Excel.ConvertToCSV\Frends.Excel.ConvertToCSV.csproj", "{AB0838CD-0291-4D18-9743-44A9C474145C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{78F7F22E-6E20-4BCE-8362-0C558568B729}"
+	ProjectSection(SolutionItems) = preProject
+		CHANGELOG.md = CHANGELOG.md
+		..\.github\workflows\ConvertToCSV_build_and_test_on_main.yml = ..\.github\workflows\ConvertToCSV_build_and_test_on_main.yml
+		..\.github\workflows\ConvertToCSV_build_and_test_on_push.yml = ..\.github\workflows\ConvertToCSV_build_and_test_on_push.yml
+		..\.github\workflows\ConvertToCSV_release.yml = ..\.github\workflows\ConvertToCSV_release.yml
+		README.md = README.md
+	EndProjectSection
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frends.Excel.ConvertToCSV.Tests", "Frends.Excel.ConvertToCSV.Tests\Frends.Excel.ConvertToCSV.Tests.csproj", "{3D74A24C-D1EE-48FB-BA13-A7B6FE96EF25}"
 EndProject
 Global

@@ -1,31 +1,37 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <AssemblyName>Frends.Excel.ConvertToCSV</AssemblyName>
-    <RootNamespace>Frends.Excel.ConvertToCSV</RootNamespace>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<AssemblyName>Frends.Excel.ConvertToCSV</AssemblyName>
+		<RootNamespace>Frends.Excel.ConvertToCSV</RootNamespace>
 
-    <Version>1.0.0</Version>
-    <Authors>Frends</Authors>
-    <Copyright>Frends</Copyright>
-    <Company>Frends</Company>
-    <Product>Frends</Product>
-    <PackageTags>Frends</PackageTags>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Description>Task for converting Excel files to CSV.</Description>
-    <PackageProjectUrl>https://frends.com/</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/FrendsPlatform/Frends.Excel/tree/main/Frends.Excel.ConvertToCSV</RepositoryUrl>
-  </PropertyGroup>
+		<Version>1.0.1</Version>
+		<Authors>Frends</Authors>
+		<Copyright>Frends</Copyright>
+		<Company>Frends</Company>
+		<Product>Frends</Product>
+		<PackageTags>Frends</PackageTags>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<Description>Task for converting Excel files to CSV.</Description>
+		<PackageProjectUrl>https://frends.com/</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/FrendsPlatform/Frends.Excel/tree/main/Frends.Excel.ConvertToCSV</RepositoryUrl>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="ExcelDataReader.DataSet" />
-    <None Remove="ExcelDataReader" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="ExcelDataReader.DataSet" Version="3.6.0" />
-    <PackageReference Include="ExcelDataReader" Version="3.6.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="FrendsTaskMetadata.json" Pack="true" PackagePath="/">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Remove="ExcelDataReader.DataSet" />
+		<None Remove="ExcelDataReader" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="ExcelDataReader.DataSet" Version="3.6.0" />
+		<PackageReference Include="ExcelDataReader" Version="3.6.0" />
+	</ItemGroup>
 </Project>

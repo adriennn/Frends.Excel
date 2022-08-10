@@ -22,64 +22,52 @@ public class ExcelConvertTests
         _input.Path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../../../TestData/");
         _options.CsvSeparator = ",";
         _options.ReadOnlyWorkSheetWithName = "";
-
     }
 
     [Test]
     public void TestConvertXlsxToCSV()
     {
-
-        // Test converting all worksheets of xlsx file to csv.
         _input.Path = Path.Combine(_input.Path, "ExcelTestInput1.xlsx");
         var result = Excel.ConvertToCSV(_input, _options, new CancellationToken());
-        var expectedResult =
-            "Foo,Bar,Kanji 働,Summa\n1,2,3,6\nKissa kuva,1,2,3\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\nFoo,,,\n,Bar,,\n";
-        Assert.That(Regex.Replace(result.CSV, @"[\s+]", ""),
-            Does.StartWith(Regex.Replace(expectedResult.ToString(), @"[\s+]", "")));
+        var expectedResult = "Foo,Bar,Kanji 働,Summa\n1,2,3,6\nKissa kuva,1,2,3\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\nFoo,,,\n,Bar,,\n";
+        Assert.That(Regex.Replace(result.CSV ?? "", @"[\s+]", ""), Does.StartWith(Regex.Replace(expectedResult.ToString(), @"[\s+]", "")));
     }
 
     [Test]
     public void TestConvertXlsToCSV()
     {
-        // Test converting all worksheets of xls file to csv.
         _input.Path = Path.Combine(_input.Path, "ExcelTestInput2.xls");
         var result = Excel.ConvertToCSV(_input, _options, new CancellationToken());
-        var expectedResult =
-            "Foo,Bar,Kanji 働,Summa\n1,2,3,6\nKissa kuva,1,2,3\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\nFoo,,,\n,Bar,,\n";
-        Assert.That(Regex.Replace(result.CSV, @"[\s+]", ""),
-            Does.StartWith(Regex.Replace(expectedResult.ToString(), @"[\s+]", "")));
+        var expectedResult = "Foo,Bar,Kanji 働,Summa\n1,2,3,6\nKissa kuva,1,2,3\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\nFoo,,,\n,Bar,,\n";
+        Assert.That(Regex.Replace(result.CSV ?? "", @"[\s+]", ""), Does.StartWith(Regex.Replace(expectedResult.ToString(), @"[\s+]", "")));
     }
 
     [Test]
     public void TestConvertXlsxWithDatesToCSV()
     {
-
-        // Test converting all worksheets of xlsx file to csv.
         _input.Path = Path.Combine(_input.Path, "TestDateFormat.xlsx");
         _options.ReadOnlyWorkSheetWithName = "Sheet2";
         _options.DateFormat = DateFormats.DDMMYYYY;
         _options.ShortDatePattern = true;
         var result = Excel.ConvertToCSV(_input, _options, new CancellationToken());
         var expectedResult = "25/12/2021,25/02/2021,12/05/2020,30/12/2021";
-        Assert.That(Regex.Replace(result.CSV, @"[\s+]", ""),
-            Does.StartWith(Regex.Replace(expectedResult.ToString(), @"[\s+]", "")));
+        Assert.That(Regex.Replace(result.CSV ?? "", @"[\s+]", ""), Does.StartWith(Regex.Replace(expectedResult.ToString(), @"[\s+]", "")));
+
     }
 
     [Test]
     public void TestConvertXlsOneWorksheetToCSV()
     {
-        // Test converting one worksheet of xls file to csv.
         _input.Path = Path.Combine(_input.Path, "ExcelTestInput2.xls");
         var result = Excel.ConvertToCSV(_input, _options, new CancellationToken());
         var expectedResult = "Foo,Bar,Kanji働,Summa1,2,3,6";
-        Assert.That(Regex.Replace(result.CSV, @"[\s+]", ""),
-            Does.StartWith(Regex.Replace(expectedResult.ToString(), @"[\s+]", "")));
+
+        Assert.That(Regex.Replace(result.CSV ?? "", @"[\s+]", ""), Does.StartWith(Regex.Replace(expectedResult.ToString(), @"[\s+]", "")));
     }
 
     [Test]
     public void ShouldThrowUnknownFileFormatError()
     {
-        // Test converting one worksheet of xls file to csv.
         _input.Path = Path.Combine(_input.Path, "UnitTestErrorFile.txt");
         _options.ThrowErrorOnFailure = true;
         Assert.That(() => Excel.ConvertToCSV(_input, _options, new CancellationToken()), Throws.Exception);
@@ -88,7 +76,6 @@ public class ExcelConvertTests
     [Test]
     public void DoNotThrowOnFailure()
     {
-        //try to convert a file that does not exist 
         _input.Path = Path.Combine(_input.Path, "thisfiledoesnotexist.txt");
         _options.ThrowErrorOnFailure = false;
         try
