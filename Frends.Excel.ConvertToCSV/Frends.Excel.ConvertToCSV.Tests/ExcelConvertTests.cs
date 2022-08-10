@@ -27,110 +27,66 @@ public class ExcelConvertTests
     [Test]
     public void TestConvertXlsxToCSV()
     {
-        if (_input.Path != null)
-        {
-            _input.Path = Path.Combine(_input.Path, "ExcelTestInput1.xlsx");
-            var result = Excel.ConvertToCSV(_input, _options, new CancellationToken());
-            var expectedResult =
-                "Foo,Bar,Kanji 働,Summa\n1,2,3,6\nKissa kuva,1,2,3\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\nFoo,,,\n,Bar,,\n";
-            if (result.CSV != null)
-                Assert.That(Regex.Replace(result.CSV, @"[\s+]", ""), Does.StartWith(Regex.Replace(expectedResult.ToString(), @"[\s+]", "")));
-            else
-                Assert.Fail();
-        }
-        else
-            throw new Exception($"Path missing, {_input.Path}");
+        _input.Path = Path.Combine(_input.Path, "ExcelTestInput1.xlsx");
+        var result = Excel.ConvertToCSV(_input, _options, new CancellationToken());
+        var expectedResult = "Foo,Bar,Kanji 働,Summa\n1,2,3,6\nKissa kuva,1,2,3\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\nFoo,,,\n,Bar,,\n";
+        Assert.That(Regex.Replace(result.CSV ?? "", @"[\s+]", ""), Does.StartWith(Regex.Replace(expectedResult.ToString(), @"[\s+]", "")));
     }
 
     [Test]
     public void TestConvertXlsToCSV()
     {
-        if (_input.Path != null)
-        {
-            _input.Path = Path.Combine(_input.Path, "ExcelTestInput2.xls");
-            var result = Excel.ConvertToCSV(_input, _options, new CancellationToken());
-            var expectedResult =
-                "Foo,Bar,Kanji 働,Summa\n1,2,3,6\nKissa kuva,1,2,3\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\nFoo,,,\n,Bar,,\n";
-            if (result.CSV != null)
-                Assert.That(Regex.Replace(result.CSV, @"[\s+]", ""), Does.StartWith(Regex.Replace(expectedResult.ToString(), @"[\s+]", "")));
-            else
-                Assert.Fail();
-        }
-        else
-            throw new Exception($"Path missing, {_input.Path}");
+        _input.Path = Path.Combine(_input.Path, "ExcelTestInput2.xls");
+        var result = Excel.ConvertToCSV(_input, _options, new CancellationToken());
+        var expectedResult = "Foo,Bar,Kanji 働,Summa\n1,2,3,6\nKissa kuva,1,2,3\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\n,,,\nFoo,,,\n,Bar,,\n";
+        Assert.That(Regex.Replace(result.CSV ?? "", @"[\s+]", ""), Does.StartWith(Regex.Replace(expectedResult.ToString(), @"[\s+]", "")));
     }
 
     [Test]
     public void TestConvertXlsxWithDatesToCSV()
     {
-        if (_input.Path != null)
-        {
-            _input.Path = Path.Combine(_input.Path, "TestDateFormat.xlsx");
-            _options.ReadOnlyWorkSheetWithName = "Sheet2";
-            _options.DateFormat = DateFormats.DDMMYYYY;
-            _options.ShortDatePattern = true;
-            var result = Excel.ConvertToCSV(_input, _options, new CancellationToken());
-            var expectedResult = "25/12/2021,25/02/2021,12/05/2020,30/12/2021";
+        _input.Path = Path.Combine(_input.Path, "TestDateFormat.xlsx");
+        _options.ReadOnlyWorkSheetWithName = "Sheet2";
+        _options.DateFormat = DateFormats.DDMMYYYY;
+        _options.ShortDatePattern = true;
+        var result = Excel.ConvertToCSV(_input, _options, new CancellationToken());
+        var expectedResult = "25/12/2021,25/02/2021,12/05/2020,30/12/2021";
+        Assert.That(Regex.Replace(result.CSV ?? "", @"[\s+]", ""), Does.StartWith(Regex.Replace(expectedResult.ToString(), @"[\s+]", "")));
 
-            if (result.CSV != null)
-                Assert.That(Regex.Replace(result.CSV, @"[\s+]", ""), Does.StartWith(Regex.Replace(expectedResult.ToString(), @"[\s+]", "")));
-            else
-                Assert.Fail();
-        }
-        else
-            throw new Exception($"Path missing, {_input.Path}");
     }
 
     [Test]
     public void TestConvertXlsOneWorksheetToCSV()
     {
-        if (_input.Path != null)
-        {
-            _input.Path = Path.Combine(_input.Path, "ExcelTestInput2.xls");
-            var result = Excel.ConvertToCSV(_input, _options, new CancellationToken());
-            var expectedResult = "Foo,Bar,Kanji働,Summa1,2,3,6";
+        _input.Path = Path.Combine(_input.Path, "ExcelTestInput2.xls");
+        var result = Excel.ConvertToCSV(_input, _options, new CancellationToken());
+        var expectedResult = "Foo,Bar,Kanji働,Summa1,2,3,6";
 
-            if (result.CSV != null)
-                Assert.That(Regex.Replace(result.CSV, @"[\s+]", ""), Does.StartWith(Regex.Replace(expectedResult.ToString(), @"[\s+]", "")));
-            else
-                Assert.Fail();
-        }
-        else
-            throw new Exception($"Path missing, {_input.Path}");
+        Assert.That(Regex.Replace(result.CSV ?? "", @"[\s+]", ""), Does.StartWith(Regex.Replace(expectedResult.ToString(), @"[\s+]", "")));
     }
 
     [Test]
     public void ShouldThrowUnknownFileFormatError()
     {
-        if (_input.Path != null)
-        {
-            _input.Path = Path.Combine(_input.Path, "UnitTestErrorFile.txt");
-            _options.ThrowErrorOnFailure = true;
-            Assert.That(() => Excel.ConvertToCSV(_input, _options, new CancellationToken()), Throws.Exception);
-        }
-        else
-            throw new Exception($"Path missing, {_input.Path}");
+        _input.Path = Path.Combine(_input.Path, "UnitTestErrorFile.txt");
+        _options.ThrowErrorOnFailure = true;
+        Assert.That(() => Excel.ConvertToCSV(_input, _options, new CancellationToken()), Throws.Exception);
     }
 
     [Test]
     public void DoNotThrowOnFailure()
     {
-        if (_input.Path != null)
+        _input.Path = Path.Combine(_input.Path, "thisfiledoesnotexist.txt");
+        _options.ThrowErrorOnFailure = false;
+        try
         {
-            _input.Path = Path.Combine(_input.Path, "thisfiledoesnotexist.txt");
-            _options.ThrowErrorOnFailure = false;
-            try
-            {
-                var result = Excel.ConvertToCSV(_input, _options, new CancellationToken());
-                Assert.AreEqual(result.Success, false);
-                Assert.AreEqual(result.CSV, null);
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail("This should not happen: " + ex.Message);
-            }
+            var result = Excel.ConvertToCSV(_input, _options, new CancellationToken());
+            Assert.AreEqual(result.Success, false);
+            Assert.AreEqual(result.CSV, null);
         }
-        else
-            throw new Exception($"Path missing, {_input.Path}");
+        catch (Exception ex)
+        {
+            Assert.Fail("This should not happen: " + ex.Message);
+        }
     }
 }

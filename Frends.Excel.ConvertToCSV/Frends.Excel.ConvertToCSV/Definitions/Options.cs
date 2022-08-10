@@ -20,7 +20,7 @@ public class Options
     /// <example>;</example>
     [DefaultValue(@";")]
     [DisplayFormat(DataFormatString = "Text")]
-    public string? CsvSeparator { get; set; }
+    public string CsvSeparator { get; set; } = ";";
 
     /// <summary>
     /// Choose if exception should be thrown when conversion fails.

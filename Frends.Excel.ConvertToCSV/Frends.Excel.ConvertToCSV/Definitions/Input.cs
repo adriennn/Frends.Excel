@@ -14,5 +14,5 @@ public class Input
     /// <example>C:\tmp\ExcelFile.xlsx</example>
     [DefaultValue(@"C:\tmp\ExcelFile.xlsx")]
     [DisplayFormat(DataFormatString = "Text")]
-    public string? Path { get; set; }
+    public string Path { get; set; } = "";
 }
