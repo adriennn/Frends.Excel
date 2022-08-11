@@ -58,8 +58,6 @@ public static class Excel
 
         foreach (DataTable table in result.Tables)
         {
-            cancellationToken.ThrowIfCancellationRequested();
-
             // Read only wanted worksheets. If none is specified read all.
             if (options.ShouldReadSheet(table.TableName))
             {
