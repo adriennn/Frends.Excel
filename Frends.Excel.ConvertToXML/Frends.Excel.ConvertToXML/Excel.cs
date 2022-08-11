@@ -56,6 +56,7 @@ public static class Excel
         xw.WriteStartElement("workbook");
         xw.WriteAttributeString("workbook_name", file_name);
 
+#pragma warning disable S3267 // Using LINQ here would make the iteration unnecessary complex.
         foreach (DataTable table in result.Tables)
         {
             // Read only wanted worksheets. If none is specified read all.
@@ -102,6 +103,7 @@ public static class Excel
                 xw.WriteEndElement();
             }
         }
+#pragma warning restore S3267 // Using LINQ here would make the iteration unnecessary complex.
 
         xw.WriteEndDocument();
         xw.Close();
