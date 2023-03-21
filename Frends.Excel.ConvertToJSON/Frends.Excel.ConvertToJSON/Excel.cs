@@ -90,7 +90,7 @@ public static class Excel
             if (content.GetType().Name == "DateTime")
                 content = ConvertDateTimes((DateTime)content, options);
 
-            columnValues.Add(new Cell 
+            columnValues.Add(new Cell
             {
                 ColumnName = options.UseNumbersAsColumnHeaders ? j + 1 : ColumnIndexToColumnLetter(j + 1),
                 ColumnIndex = j + 1,

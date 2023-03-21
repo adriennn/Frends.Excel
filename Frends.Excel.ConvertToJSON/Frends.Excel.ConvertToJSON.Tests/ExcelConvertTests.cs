@@ -92,7 +92,7 @@ public class ExcelConvertTests
         var input = new Input { Path = Path.Combine(excelFilesDir, "TestQuotes.xlsx") };
         var options = new Options { ThrowErrorOnFailure = true };
         var result = Excel.ConvertToJSON(input, options, default);
-        var expectedResult = @"{""workbook"":{""workbook_name"":""TestQuotes.xlsx"",""worksheets"":[{""name"":""Quote \"" again"",""rows"":[{ ""RowNumber"":1,""Cells"":[{ ""ColumnName"":""A"",""ColumnIndex"":1,""ColumnValue"":""Hello \"" quote""}]}]}]}}";     
+        var expectedResult = @"{""workbook"":{""workbook_name"":""TestQuotes.xlsx"",""worksheets"":[{""name"":""Quote \"" again"",""rows"":[{ ""RowNumber"":1,""Cells"":[{ ""ColumnName"":""A"",""ColumnIndex"":1,""ColumnValue"":""Hello \"" quote""}]}]}]}}";
         Assert.That(Regex.Replace(result.JSON ?? "", @"[\s+]", ""), Does.StartWith(Regex.Replace(expectedResult.ToString(), @"[\s+]", "")));
     }
 

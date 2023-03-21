@@ -6,7 +6,6 @@ internal class Cell
     public int ColumnIndex { get; set; }
     public string? ColumnValue { get; set; }
 
-    public Cell()
-    {}
+    public Cell() { }
 }
 

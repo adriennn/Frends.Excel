@@ -17,12 +17,13 @@ public enum DateFormats
     /// otherwise will use `dd/MM/yyyy H:mm:ss`.
     /// </summary>
     DDMMYYYY,
+
     /// <summary>
     /// Will use `MM/dd/yyyy` if `ShortDatePattern` option is set to `true`,
     /// otherwise will use `MM/dd/yyyy h:mm:ss tt`.
     /// </summary>
     MMDDYYYY,
-    
+
     /// <summary>
     /// Will use `yyyy/MM/dd` if `ShortDatePattern` option is set to `true`,
     /// otherwise will use `yyyy/MM/dd H:mm:ss`.
