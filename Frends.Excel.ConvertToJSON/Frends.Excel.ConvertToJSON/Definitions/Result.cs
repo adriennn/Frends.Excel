@@ -24,7 +24,7 @@ public class Result
     /// <summary>
     /// Excel-conversion to JSON.
     /// </summary>
-    /// <example>{"Sheet1":[{"A1":"1","B1":"2"},{"A2":"3","B2":"4"}]}</example>
+    /// <example>"{"workbook":{"workbook_name":"ExcelTestInput2.xls","worksheet":{"name":"Sheet1","rows":[{"RowNumber":1,"Cells":[{"ColumnName":"A","ColumnIndex":1,"ColumnValue":"Foo"},{"ColumnName":"B","ColumnIndex":2,"ColumnValue":"Bar"},{"ColumnName":"C","ColumnIndex":3,"ColumnValue":"Kanji働"},{"ColumnName":"D","ColumnIndex":4,"ColumnValue":"Summa"}]}]}}}"</example>
     public string? JSON { get; private set; }
 
     internal Result(bool success, string? json, string? errorMessage)

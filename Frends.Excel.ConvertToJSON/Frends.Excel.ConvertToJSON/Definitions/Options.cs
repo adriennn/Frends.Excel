@@ -45,4 +45,12 @@ public class Options
     /// <example>true</example>
     [DefaultValue("false")]
     public bool ShortDatePattern { get; set; }
+
+    /// <summary>
+    /// If set to true, JSON string will be returned as JToken.
+    /// Default false
+    /// </summary>
+    /// <example>true</example>
+    [DefaultValue("false")]
+    public bool JToken { get; set; }
 }
