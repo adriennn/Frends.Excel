@@ -2,6 +2,7 @@
 using System.Data;
 using System.Globalization;
 using System.Text;
+using Newtonsoft.Json;
 using ExcelDataReader;
 using Frends.Excel.ConvertToJSON.Definitions;
 
@@ -17,25 +18,23 @@ public static class Excel
     /// </summary>
     /// <param name="input">Input configuration</param>
     /// <param name="options">Input options</param>
+    /// <param name="cancellationToken"></param>
     /// <returns>Result containing the converted JSON string.</returns>
     /// <exception cref="Exception"></exception>
     public static Result ConvertToJSON(
         [PropertyTab] Input input,
-        [PropertyTab] Options options)
+        [PropertyTab] Options options,
+        CancellationToken cancellationToken)
     {
         try
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-            using (var stream = new FileStream(input.Path, FileMode.Open))
-            {
-                using (var excelReader = ExcelReaderFactory.CreateReader(stream))
-                {
-                    var result = excelReader.AsDataSet();
-                    var json = ConvertDataSetToJson(result, options, Path.GetFileName(input.Path));
-                    return new Result(true, json, null);
-                }
-            }
+            using var stream = new FileStream(input.Path, FileMode.Open);
+            using var excelReader = ExcelReaderFactory.CreateReader(stream);
+            var result = excelReader.AsDataSet();
+            var json = ConvertDataSetToJson(result, options, Path.GetFileName(input.Path), cancellationToken);
+            return new Result(true, json, null);
         }
         catch (Exception ex)
         {
@@ -46,122 +45,64 @@ public static class Excel
         }
     }
 
-    private static string SanitizeJSONValue(string input)
+    private static dynamic ConvertDataSetToJson(DataSet result, Options options, string fileName, CancellationToken cancellationToken)
     {
-        return input.Replace("\"", "\\\"");
-    }
-
-    private static string ConvertDataSetToJson(DataSet result, Options options, string fileName)
-    {
-        var json = new StringBuilder();
-        json.Append('{');
-        json.Append($"\"workbook\": ");
-        json.Append('{');
-        json.Append($"\"workbook_name\": \"{fileName}\",");
-        if (options.ReadOnlyWorkSheetWithName.Length == 0)
-        {
-            json.Append("\"worksheets\": ");
-            json.Append('[');
-        }
-        else
-        {
-            json.Append("\"worksheet\" : ");
-        }
+        var sheets = new List<dynamic>();
 
         foreach (DataTable dt in result.Tables)
         {
             // If sheet name is specified AND current sheet isn't the one we want - skip
             if (!string.IsNullOrWhiteSpace(options.ReadOnlyWorkSheetWithName)
                 && options.ReadOnlyWorkSheetWithName.Trim() != dt.TableName)
-            {
                 continue;
-            }
 
-            json.Append('{');
-            json.Append($"\"name\": \"{SanitizeJSONValue(dt.TableName)}\",");
-            json.Append("\"rows\": ");
+            var sheet = new { name = dt.TableName, rows = new List<Row>() };
 
-            // Building json from datatable.
-            if (dt.Rows.Count > 0)
+            for (var i = 0; i < dt.Rows.Count; i++)
             {
-                json.Append('[');
-                for (var i = 0; i < dt.Rows.Count; i++)
-                {
-                    var content = WriteRowToJson(dt, i, options).ToString();
-                    if (!content.ToString().Equals("empty"))
-                    {
-                        json.Append(content);
-                        json.Append('}');
-                        if (i < dt.Rows.Count - 1)
-                            json.Append(',');
-                    }
-                }
-                json.Append(']');
+                var row = new Row();
+                row.Cells = CollectColumnsFromRow(dt, i, options, cancellationToken);
+                row.RowNumber = i + 1;
+                if (row.Cells.Count > 0)
+                    sheet.rows.Add(row);
             }
-
-            json.Append('}');
-
-            // Append comma when this is either the last sheet
-            // An exception is when we serialize only one sheet - then we never need the comma (thus check for that param)
-            if (string.IsNullOrWhiteSpace(options.ReadOnlyWorkSheetWithName)
-                && result.Tables.IndexOf(dt) != result.Tables.Count - 1)
-            {
-                json.Append(',');
-            }
+            sheets.Add(sheet);
         }
 
-        if (options.ReadOnlyWorkSheetWithName.Length == 0)
-            json.Append(']');
+        object output = string.IsNullOrEmpty(options.ReadOnlyWorkSheetWithName)
+            ? new { workbook = new { workbook_name = fileName, worksheets = sheets } }
+            : new { workbook = new { workbook_name = fileName, worksheet = sheets[0] } };
 
-        json.Append('}');
-        json.Append('}');
-
-        return json.ToString();
+        return JsonConvert.SerializeObject(output);
     }
 
-    private static string WriteRowToJson(DataTable dt, int i, Options options)
+    private static List<Cell> CollectColumnsFromRow(DataTable dt, int i, Options options, CancellationToken cancellationToken)
     {
-        var rowJson = new StringBuilder();
-        rowJson.Append('{');
-        rowJson.Append($"\"{i + 1}\":");
-
-        var content = WriteRowColumnsToJson(dt, i, options);
-
-        if (content.Equals("[]")) return "empty";
-
-        rowJson.Append(content);
-
-        return rowJson.ToString();
-    }
-
-    private static string WriteRowColumnsToJson(DataTable dt, int i, Options options)
-    {
-        var columnValues = new List<string>();
+        var columnValues = new List<Cell>();
         for (var j = 0; j < dt.Columns.Count; j++)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             var content = dt.Rows[i].ItemArray[j];
-            if (string.IsNullOrWhiteSpace(content?.ToString())) continue;
+
+            if (content == null) continue;
+            if (string.IsNullOrEmpty(content.ToString())) continue;
 
             if (content.GetType().Name == "DateTime")
                 content = ConvertDateTimes((DateTime)content, options);
 
-            content = SanitizeJSONValue(content?.ToString() ?? "");
-
-            var columnHeader = options.UseNumbersAsColumnHeaders
-                ? $"\"{j + 1}\""
-                : $"\"{ColumnIndexToColumnLetter(j + 1)}\"";
-
-            var columnValue = $"{{{columnHeader}:\"{content}\"}}";
-            columnValues.Add(columnValue);
+            columnValues.Add(new Cell
+            {
+                ColumnName = options.UseNumbersAsColumnHeaders ? j + 1 : ColumnIndexToColumnLetter(j + 1),
+                ColumnIndex = j + 1,
+                ColumnValue = content.ToString()
+            });
         }
-
-        return $"[{string.Join(',', columnValues)}]";
+        return columnValues;
     }
 
     private static string ConvertDateTimes(DateTime date, Options options)
     {
         if (options.ShortDatePattern)
-        {
             switch (options.DateFormat)
             {
                 case DateFormats.DDMMYYYY:
@@ -175,24 +116,20 @@ public static class Excel
                 default:
                     return date.ToString(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern);
             }
-        }
-        else
-        {
-            switch (options.DateFormat)
-            {
-                case DateFormats.DDMMYYYY:
-                    return date.ToString("dd/MM/yyyy H:mm:ss", CultureInfo.InvariantCulture);
-                case DateFormats.MMDDYYYY:
-                    return date.ToString("MM/dd/yyyy h:mm:ss tt", CultureInfo.InvariantCulture);
-                case DateFormats.YYYYMMDD:
-                    return date.ToString("yyyy/MM/dd H:mm:ss", CultureInfo.InvariantCulture);
-                case DateFormats.DEFAULT:
-                    return date.ToString(CultureInfo.CurrentCulture.DateTimeFormat);
-                default:
-                    return date.ToString(CultureInfo.CurrentCulture.DateTimeFormat);
-            }
-        }
 
+        switch (options.DateFormat)
+        {
+            case DateFormats.DDMMYYYY:
+                return date.ToString("dd/MM/yyyy H:mm:ss", CultureInfo.InvariantCulture);
+            case DateFormats.MMDDYYYY:
+                return date.ToString("MM/dd/yyyy h:mm:ss tt", CultureInfo.InvariantCulture);
+            case DateFormats.YYYYMMDD:
+                return date.ToString("yyyy/MM/dd H:mm:ss", CultureInfo.InvariantCulture);
+            case DateFormats.DEFAULT:
+                return date.ToString(CultureInfo.CurrentCulture.DateTimeFormat);
+            default:
+                return date.ToString(CultureInfo.CurrentCulture.DateTimeFormat);
+        }
     }
 
     private static string ColumnIndexToColumnLetter(int colIndex)
