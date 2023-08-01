@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.0.2] - 2023-08-01
+### Fixed
+- Fixed Options.ShouldReadSheet method to check if the Sheet name equals to the given name.
+
 ## [1.0.1] - 2022-08-10
 ### Change
 - Documentation updates
