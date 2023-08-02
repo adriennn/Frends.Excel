@@ -49,7 +49,7 @@ public class Options
     {
         if (string.IsNullOrWhiteSpace(ReadOnlyWorkSheetWithName))
             return true;
-        if (ReadOnlyWorkSheetWithName.Contains(sheetName))
+        if (ReadOnlyWorkSheetWithName.Equals(sheetName))
             return true;
 
         return false;

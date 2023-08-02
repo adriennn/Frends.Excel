@@ -89,4 +89,16 @@ public class ExcelConvertTests
             Assert.Fail("This should not happen: " + ex.Message);
         }
     }
+
+    [Test]
+    public void TestConvertXlsxWithSimilarSheetNames()
+    {
+        _input.Path = Path.Combine(_input.Path, "ExcelTestInput3.xlsx");
+        _options.ReadOnlyWorkSheetWithName = "Test1";
+        _options.DateFormat = DateFormats.DDMMYYYY;
+        _options.ShortDatePattern = true;
+        var result = Excel.ConvertToCSV(_input, _options, new CancellationToken());
+        var expectedResult = "Foo,Bar,Kanji働,Summa1,2,3,6";
+        Assert.That(Regex.Replace(result.CSV ?? "", @"[\s+]", ""), Does.StartWith(Regex.Replace(expectedResult.ToString(), @"[\s+]", "")));
+    }
 }

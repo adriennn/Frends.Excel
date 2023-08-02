@@ -54,7 +54,7 @@ public static class Excel
             // Read only wanted worksheets. If none is specified read all.
             if (!options.ShouldReadSheet(table.TableName))
                 continue;
-            
+
             for (var i = 0; i < table.Rows.Count; i++)
             {
                 for (var j = 0; j < table.Columns.Count; j++)
